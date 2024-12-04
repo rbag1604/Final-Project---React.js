@@ -1,0 +1,23 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '16.x' # Ensure this matches your Node.js version
+    checkLatest: true
+
+- script: |
+    npm install
+    npm run build
+  displayName: 'Install Dependencies and Build'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/build'
+    artifact: 'react-build'
